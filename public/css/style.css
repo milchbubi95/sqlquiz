@@ -1,0 +1,35 @@
+
+.textButtons {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.textButtons > li {
+    float: left;
+    padding: 10px;
+    margin-right: 10px;
+    background-color: #3490dc;
+    border-radius: .25rem;
+    color: white;
+    cursor: pointer;
+}
+
+.answer {
+    visibility: hidden;
+    position: absolute;
+    width: 100%;
+    left: 0;
+}
+
+#finish {
+    right: 0;
+    position: absolute;
+}
+
+@media (min-width: 576px) {
+    .jumbotron {
+    padding: 2rem 2rem;
+    }
+}
+
