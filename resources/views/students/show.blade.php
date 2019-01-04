@@ -17,7 +17,8 @@
         {{ method_field('PATCH') }}
         @foreach ($questions as $question)
                 <div class="answer answer{{$i}}">
-                    <h1>{{$question->title}}</h1>
+                    <h3>{{$question->title}}</h3>
+                    <p>{{$question->text}}</p>
                     <div class="form-group">
                         <textarea name="solution{{$question->id}}" id="answerBox{{$i}}" rows="5" class="form-control" placeholder=""></textarea>
                     </div>
@@ -34,6 +35,11 @@
                             <button type="button" class="nextBtn{{$i}}" onclick="nextQuestion({{$i}}, {{count($questions)}})">Weiter</button>
                         </div>
                     </div>
+                        @if ($question->img != null)
+                            <div class="row justify-content-center" style="margin-top: 30px">
+                                <img src="/sqlquiz/public/storage/images/{{$question->img}}">
+                            </div>
+                        @endif
                 </div>
             
             <?php $i++; ?>

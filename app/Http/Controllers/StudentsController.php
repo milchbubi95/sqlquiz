@@ -8,6 +8,7 @@ use App\Answer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use App\Lib\src\PHPSQLParser;
 
 class StudentsController extends Controller
 {
@@ -81,19 +82,35 @@ class StudentsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //require_once('php-sql-parser/src/PHPSQLParser.php');
 
         $questions = Question::where('test_id', $id)->get();
 
         foreach ($questions as $question) {
             $answer = new Answer;
-            $answerText = $request->input('solution'.$question->id);
             $solution = Question::where('id', $question->id)->first();
-            if ($answerText == $solution->solution) {
-                $answer->result = 1;
+
+            $answerText = $request->input('solution'.$question->id);
+
+            $Qparser = new PHPSQLParser();
+            $Qparsed = $Qparser->parse($solution->solution);
+            $Aparser = new PHPSQLParser();
+            $Aparsed = $Aparser->parse($answerText);
+           
+            $counter = count($Aparsed);
+
+            $diff = array_diff_assoc_recursive($Qparsed, $Aparsed);
+            
+            if ($diff != 0) {
+                $result = 1;
+                $result = $result - (count($diff) / $counter);
+                echo $result;
             } else {
-                $answer->result = 0;
+                $result = 1;
             }
-            $answer->text = $request->input('solution'.$question->id);
+            
+            $answer->text = $answerText;
+            $answer->result = $result;
             $answer->user_id = Auth::id();
             $answer->question_id = $question->id;
             $answer->save();
@@ -111,5 +128,25 @@ class StudentsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function array_diff_assoc_recursive($array1, $array2) {
+	    foreach($array1 as $key => $value) {
+            if(is_array($value)) {
+                if(!isset($array2[$key])) {
+                    $difference[$key] = $value;
+                } elseif (!is_array($array2[$key])) {
+                    $difference[$key] = $value;
+                } else {
+                    $new_diff = array_diff_assoc_recursive($value, $array2[$key]);
+                    if($new_diff != FALSE) {
+                        $difference[$key] = $new_diff;
+                    }
+                }
+            } elseif(!isset($array2[$key]) || $array2[$key] != $value) {
+                $difference[$key] = $value;
+            }
+        }
+        return !isset($difference) ? 0 : $difference;
     }
 }

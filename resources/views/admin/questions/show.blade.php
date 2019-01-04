@@ -18,6 +18,11 @@
                     </div>
                 </div>
                 <hr>
+                @if($question->img != null)
+                    <?php $path = '../../storage/images/'.$question->img; ?>
+                    <img src="{{$path}}" alt="img">
+                    <hr>
+                @endif
                 <div class="container">
                     <div class="row justify-content-between">
                         @if(!Auth::guest())

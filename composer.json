@@ -9,6 +9,7 @@
         "adldap2/adldap2-laravel": "^5.0",
         "caouecs/laravel-lang": "~3.0",
         "fideloper/proxy": "^4.0",
+        "greenlion/php-sql-parser": "^4.2",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "~5.0"

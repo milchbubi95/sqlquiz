@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Lib\src;
+
 /**
  * php-sql-parser.php
  *

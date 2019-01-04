@@ -18,10 +18,10 @@ class CreateQuestionsTable extends Migration
             $table->string('title', 100);
             $table->text('text');
             $table->text('solution');
-            $table->string('img');
+            $table->string('img')->default(null)->nullable();
             $table->tinyInteger('difficulty');
             $table->integer('test_id')->unsigned();
-            $table->foreign('test_id')->references('id')->on('tests');
+            $table->foreign('test_id')->references('id')->on('tests')->onDelete('cascade');
             $table->timestamps();
         });
     }
