@@ -8,7 +8,9 @@ use App\Answer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
-use App\Lib\src\PHPSQLParser;
+
+use \PHPSQLParser\PHPSQLParser;
+use \Rogervila\ArrayDiffMultidimensional;
 
 class StudentsController extends Controller
 {
@@ -82,31 +84,36 @@ class StudentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //require_once('php-sql-parser/src/PHPSQLParser.php');
-
         $questions = Question::where('test_id', $id)->get();
 
         foreach ($questions as $question) {
             $answer = new Answer;
             $solution = Question::where('id', $question->id)->first();
+            $solutionText = strtoupper($solution->solution);
 
             $answerText = $request->input('solution'.$question->id);
+            $answerText = strtoupper($answerText);
 
             $Qparser = new PHPSQLParser();
-            $Qparsed = $Qparser->parse($solution->solution);
+            $Qparsed = $Qparser->parse($solutionText);
             $Aparser = new PHPSQLParser();
             $Aparsed = $Aparser->parse($answerText);
-           
-            $counter = count($Aparsed);
 
-            $diff = array_diff_assoc_recursive($Qparsed, $Aparsed);
-            
-            if ($diff != 0) {
-                $result = 1;
-                $result = $result - (count($diff) / $counter);
-                echo $result;
+            if ($Aparsed != 0) {
+                $counter = count($Aparsed);
+            }
+
+            $diff = ArrayDiffMultidimensional::compare($Aparsed, $Qparsed);
+
+            if ($counter != 0) {
+                if ($diff != 0) {
+                    $result = 1;
+                    $result = $result - (count($diff) / $counter);
+                } else {
+                    $result = 1;
+                }
             } else {
-                $result = 1;
+                $result = 0;
             }
             
             $answer->text = $answerText;
@@ -129,7 +136,7 @@ class StudentsController extends Controller
     {
         //
     }
-
+/*
     public function array_diff_assoc_recursive($array1, $array2) {
 	    foreach($array1 as $key => $value) {
             if(is_array($value)) {
@@ -138,7 +145,7 @@ class StudentsController extends Controller
                 } elseif (!is_array($array2[$key])) {
                     $difference[$key] = $value;
                 } else {
-                    $new_diff = array_diff_assoc_recursive($value, $array2[$key]);
+                    $new_diff = $this->array_diff_assoc_recursive($value, $array2[$key]);
                     if($new_diff != FALSE) {
                         $difference[$key] = $new_diff;
                     }
@@ -149,4 +156,6 @@ class StudentsController extends Controller
         }
         return !isset($difference) ? 0 : $difference;
     }
+    */
 }
+
