@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Answer;
 use App\Test;
+use App\Question;
+use App\User;
 use Illuminate\Http\Request;
 
 class AnswersController extends Controller
@@ -44,23 +46,29 @@ class AnswersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Answer  $answer
+     * @param  \App\Test  $test
      * @return \Illuminate\Http\Response
      */
-    public function show(Answer $answer)
+    public function show($id)
     {
-        //
+        $test = Test::where('id', $id)->first();
+        $questions = Question::where('test_id', $test->id)->get();
+
+        return view('admin.answers.show')->with(compact('test','questions'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Answer  $answer
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Answer $answer)
+    public function evaluate($id)
     {
-        //
+        $user = User::where('id', $id)->first();
+        $answers = Answer::where('user_id', $user->id)->get();
+
+        return view('admin.answers.evaluate')->with(compact('user','answers'));
     }
 
     /**

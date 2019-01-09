@@ -26,6 +26,7 @@ Route::get('/users', 'UserController@index');
 Route::resource('admin/tests', 'TestsController');
 Route::resource('admin/questions', 'QuestionsController');
 Route::resource('admin/answers', 'AnswersController');
+Route::get('admin/answers/evaluate/{id}', 'AnswersController@evaluate');
 
 Route::resource('students', 'StudentsController');
 Route::get('/students/submit', 'StudentsController@submit');

@@ -44,7 +44,7 @@ use App\User;
 </div>
 
 @else 
-Keine Tests!
+<h5>Keine Tests vorhanden!</h5>
 @endif
 
 @endsection

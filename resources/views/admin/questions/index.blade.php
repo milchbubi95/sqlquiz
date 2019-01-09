@@ -56,7 +56,7 @@ use App\Test;
 </div>
 
 @else 
-Keine Fragen!
+<h5>Keine Fragen vorhanden!</h5>
 @endif
 
 @endsection
