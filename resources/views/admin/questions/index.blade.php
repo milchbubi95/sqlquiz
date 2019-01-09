@@ -21,7 +21,7 @@ use App\Test;
         <tr>
             <th scope="col"></th>
             <th scope="col">Titel</th>
-            <th scope="col">Fragenstellung</th>
+            <th scope="col">Test</th>
             <th scope="col">Lösung</th>
             <th scope="col">Tools</th>
         </tr>
@@ -32,15 +32,15 @@ use App\Test;
             <tr>
                 <th scope="row">{{$count}}</th>
                 <td><a href="questions/{{$question->id}}">{{$question->title}}</a></td>
-                <?php $test = Test::where('id', $question->test_id)->get(); ?>
-                <td>{{substr($question->text, 0, 30)}}</td>
+                <?php $test = Test::where('id', $question->test_id)->first(); ?>
+                <td>{{$test["title"]}}</td>
                 <td>{{substr($question->solution, 0, 30)}}</td>
                 <td>
                     <div class="row">
                         <div class="col-lg-3 col-md-4 col-sm-6">
                         <button class="btn btn-primary"><a href="questions/{{$question->id}}/edit" style="color: white"><i class="fas fa-pen"></i></a></button>
                         </div>
-                        <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="col-lg-3 col-md-4 col-sm-6" style="margin-left: 5px">
                         {!!Form::open(['action' => ['QuestionsController@destroy', $question->id], 'method' => 'POST'])!!}
                                 {{Form::hidden('_method', 'DELETE')}}
                                 <button type="submit" class="btn btn-primary"><i class="fas fa-trash"></i></button>

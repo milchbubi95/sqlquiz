@@ -17,6 +17,8 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/admin', 'HomeController@admin');
 Route::get('/admin/home', 'HomeController@admin');
+Route::get('/admin/profile', 'HomeController@profile');
+Route::get('/admin/rights/{id}', 'HomeController@rights');
 Route::get('/users', 'UserController@index');
 
 //Route::get('questions/create/{$id}', 'QuestionsController@create');

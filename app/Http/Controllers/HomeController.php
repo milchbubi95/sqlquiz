@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Role;
 
 class HomeController extends Controller
 {
@@ -31,5 +33,17 @@ class HomeController extends Controller
     public function admin(Request $request) {
         $request->user()->authorizeRoles(['dozent']);
             return view('admin.home');
+    }
+
+    public function profile(Request $request) {
+        $request->user()->authorizeRoles(['dozent']);
+            return view('admin.profile');
+    }
+
+    public function rights(Request $request, $id) {
+        $request->user()->authorizeRoles(['dozent']);
+        $user = User::find($id);
+        $user->roles()->sync(2);
+        return redirect('admin/profile')->with('success', $user->name . ' hat Rechte erhalten.');
     }
 }

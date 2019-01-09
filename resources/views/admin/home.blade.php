@@ -17,7 +17,7 @@
                     <h1><i class="fas fa-file-alt"></i></h1>
                     <h2>{{$test}} Tests</h2>
                     <hr class="my-4">
-                    <a class="btn btn-secondary" href="tests" role="button">Zu den Tests</a>
+                    <a class="btn btn-secondary" href="admin/tests" role="button">Zu den Tests</a>
                 </div>
         </div>
             <div class="col-md-6 col-sm-12">
@@ -25,7 +25,7 @@
                     <h1><i class="fas fa-question-circle"></i></h1>
                     <h2>{{$question}} Fragen</h2>
                     <hr class="my-4">
-                    <a class="btn btn-secondary" href="questions" role="button">Zu den Fragen</a>
+                    <a class="btn btn-secondary" href="admin/questions" role="button">Zu den Fragen</a>
                 </div>
             </div>
         </div>
