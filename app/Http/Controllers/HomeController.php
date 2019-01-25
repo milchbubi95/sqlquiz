@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Role;
+use App\Test;
 
 class HomeController extends Controller
 {
@@ -26,7 +28,14 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $request->user()->authorizeRoles(['student', 'dozent']);
-            return view('home');
+
+        if($user = Auth::user()) {
+            $tests = Test::orderBy('created_at','asc')->paginate(10);
+            $request->user()->authorizeRoles(['student', 'dozent']);
+            return view('students.index')->with('tests', $tests);
+        } else {
+            return view('auth.login');
+        }
     
     }
 
@@ -40,10 +49,17 @@ class HomeController extends Controller
             return view('admin.profile');
     }
 
-    public function rights(Request $request, $id) {
+    public function giveRights(Request $request, $id) {
         $request->user()->authorizeRoles(['dozent']);
         $user = User::find($id);
         $user->roles()->sync(2);
         return redirect('admin/profile')->with('success', $user->name . ' hat Rechte erhalten.');
+    }
+
+    public function takeRights(Request $request, $id) {
+        $request->user()->authorizeRoles(['dozent']);
+        $user = User::find($id);
+        $user->roles()->sync(1);
+        return redirect('admin/profile')->with('success', $user->name . ' wurden Rechte genommen.');
     }
 }

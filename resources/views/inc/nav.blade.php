@@ -1,3 +1,8 @@
+<?php
+    use Illuminate\Support\Facades\Auth;
+    $user = Auth::user();
+?>
+
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
@@ -37,6 +42,12 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            @if ($user->roles->first()->name == 'dozent')
+                            <a class="dropdown-item" href="{{ url('admin') }}">
+                                Adminbereich
+                            </a>
+                            @endif
+    
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">

@@ -101,9 +101,11 @@ class StudentsController extends Controller
 
             if ($Aparsed != 0) {
                 $counter = count($Aparsed);
+                $diff = ArrayDiffMultidimensional::compare($Aparsed, $Qparsed);
+            } else {
+                $counter = 0;
             }
-
-            $diff = ArrayDiffMultidimensional::compare($Aparsed, $Qparsed);
+            
 
             if ($counter != 0) {
                 if ($diff != 0) {
