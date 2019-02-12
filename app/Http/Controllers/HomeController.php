@@ -39,16 +39,19 @@ class HomeController extends Controller
     
     }
 
+    //Check admin permissions
     public function admin(Request $request) {
         $request->user()->authorizeRoles(['dozent']);
             return view('admin.home');
     }
 
+    //Show permissions control
     public function profile(Request $request) {
         $request->user()->authorizeRoles(['dozent']);
             return view('admin.profile');
     }
 
+    //Give permissions
     public function giveRights(Request $request, $id) {
         $request->user()->authorizeRoles(['dozent']);
         $user = User::find($id);
@@ -56,6 +59,7 @@ class HomeController extends Controller
         return redirect('admin/profile')->with('success', $user->name . ' hat Rechte erhalten.');
     }
 
+    //Remove permissions
     public function takeRights(Request $request, $id) {
         $request->user()->authorizeRoles(['dozent']);
         $user = User::find($id);

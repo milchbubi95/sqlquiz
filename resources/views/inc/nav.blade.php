@@ -33,7 +33,7 @@
                 @else
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('students') }}">
-                            Tests
+                            Quiz
                         </a>
                     </li>
                     <li class="nav-item dropdown">

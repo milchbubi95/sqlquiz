@@ -11,14 +11,16 @@ use Illuminate\Support\Facades\Storage;
 class QuestionsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the questions.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
+        // If user is logged in
         if($user = Auth::user()) {
             $questions = Question::orderBy('created_at','asc')->paginate(10);
+            // Check for permissions
             $request->user()->authorizeRoles(['dozent']);
             return view('admin.questions.index')->with('questions', $questions);
         } else {
@@ -27,26 +29,29 @@ class QuestionsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new question.
      *
      * @return \Illuminate\Http\Response
      * @param  \App\Test  $test
      */
     public function create(Request $request)
     {   
+        // Get all tests
         $tests = Test::get();
+        // Check for permissions
         $request->user()->authorizeRoles(['dozent']);
         return view('admin.questions.create')->with('tests', $tests);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created question in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        // Validate the new question with certain fields
         $this->validate($request, [
             'title' => 'required',
             'text' => 'required',
@@ -61,7 +66,7 @@ class QuestionsController extends Controller
             $filenameWithExt = $request->file('img')->getClientOriginalName();
             // Get just filename
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            // Get just ext
+            // Get just extension
             $extension = $request->file('img')->getClientOriginalExtension();
             // Filename to store
             $fileNameToStore= $filename.'_'.time().'.'.$extension;
@@ -71,24 +76,29 @@ class QuestionsController extends Controller
             $fileNameToStore = 'noimage.jpg';
         }
 
-        // Create Question
+        // Create a new question
         $question = new Question;
+        // Get every field from the new question
         $question->title = $request->input('title');
         $question->text = $request->input('text');
         $question->solution = $request->input('solution');
         $question->difficulty = $request->input('difficulty');
+        // If image is attached, then handle file upload
         if($request->hasFile('img')){
             $question->img = $fileNameToStore;
         }
+        // Set reference to test
         $question->test_id = $request->input('test_id');
+        // Save new question
         $question->save();
 
+        // Check for permissions
         $request->user()->authorizeRoles(['dozent']);
         return redirect('admin/questions')->with('success', 'Frage erfolgreich erstellt!');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified question.
      *
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
@@ -100,7 +110,7 @@ class QuestionsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified question.
      *
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
@@ -113,7 +123,7 @@ class QuestionsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified question in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Question  $question
@@ -135,7 +145,7 @@ class QuestionsController extends Controller
             $filenameWithExt = $request->file('img')->getClientOriginalName();
             // Get just filename
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            // Get just ext
+            // Get just extension
             $extension = $request->file('img')->getClientOriginalExtension();
             // Filename to store
             $fileNameToStore= $filename.'_'.time().'.'.$extension;
@@ -145,24 +155,29 @@ class QuestionsController extends Controller
             $fileNameToStore = 'noimage.jpg';
         }
 
-        // Update Question
+        // Update the specified question
         $question = Question::find($question->id);
+        // Get every field from the new question
         $question->title = $request->input('title');
         $question->text = $request->input('text');
         $question->solution = $request->input('solution');
         $question->difficulty = $request->input('difficulty');
+        // If image is attached, then handle file upload
         if($request->hasFile('img')){
             $question->img = $fileNameToStore;
         }
+         // Set reference to test
         $question->test_id = $request->input('test_id');
+         // Update the question
         $question->save();
 
+        // Check for permissions
         $request->user()->authorizeRoles(['dozent']);
         return redirect('admin/questions')->with('success', 'Frage erfolgreich aktualisiert!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified question from storage.
      *
      * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
@@ -172,7 +187,7 @@ class QuestionsController extends Controller
         $question = Question::find($id);
 
         if($question->img != 'noimage.jpg'){
-            // Delete Question
+            // Delete the specified question
             Storage::delete('public/images/'.$question->img);
         }
         

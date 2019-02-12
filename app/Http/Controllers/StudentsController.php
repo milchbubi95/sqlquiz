@@ -15,14 +15,17 @@ use \Rogervila\ArrayDiffMultidimensional;
 class StudentsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the tests applicable to the students.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
+        // If user is logged in
         if($user = Auth::user()) {
+            // Get all tests ordered by the created date with a pagination of ten
             $tests = Test::orderBy('created_at','asc')->paginate(10);
+            // Check for permissions
             $request->user()->authorizeRoles(['student', 'dozent']);
             return view('students.index')->with('tests', $tests);
         } else {
@@ -31,7 +34,7 @@ class StudentsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new student.
      *
      * @return \Illuminate\Http\Response
      */
@@ -41,7 +44,7 @@ class StudentsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created student in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -52,7 +55,7 @@ class StudentsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified test the student selected.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -60,12 +63,13 @@ class StudentsController extends Controller
      */
     public function show($id)
     {
+        // Get the specified test
         $test = Test::find($id);
         return view('students.show')->with('test', $test);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified student.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -76,7 +80,7 @@ class StudentsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified test with the students answers in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -84,40 +88,59 @@ class StudentsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Get the specified questions belonging to the current test
         $questions = Question::where('test_id', $id)->get();
 
+        // Loop trough all questions
         foreach ($questions as $question) {
+            //Create a new answer for every question with its solution formatted uppercase
             $answer = new Answer;
             $solution = Question::where('id', $question->id)->first();
             $solutionText = strtoupper($solution->solution);
 
+            //Get the answer given by the student formatted uppercase
             $answerText = $request->input('solution'.$question->id);
             $answerText = strtoupper($answerText);
 
+            //Get an array with every single SQL statement from the solution and answer
+            //through the PHPSQLParser library (https://github.com/greenlion/PHP-SQL-Parser)
             $Qparser = new PHPSQLParser();
             $Qparsed = $Qparser->parse($solutionText);
             $Aparser = new PHPSQLParser();
             $Aparsed = $Aparser->parse($answerText);
 
+            //If students answer is not empty
             if ($Aparsed != 0) {
+                //Count how many statements where found in the students answer
                 $counter = count($Aparsed);
+                //Compare the right solution with the answer given by the student with a library
+                //which compares multidimensional arrays
                 $diff = ArrayDiffMultidimensional::compare($Aparsed, $Qparsed);
             } else {
+                //If students answer is empty
                 $counter = 0;
             }
             
-
+            //Evalutate how many mistakes where made
+            //If answer array is not empty
             if ($counter != 0) {
+                //If differences from the comparison between solution and answer where found
                 if ($diff != 0) {
+                    //Start with 100% correct
                     $result = 1;
+                    //Remove percentages for every difference or mistakes
+                    //depending on the size of the answer array
                     $result = $result - (count($diff) / $counter);
                 } else {
+                    //If no differences where found, answer and solution are the same
                     $result = 1;
                 }
             } else {
+                //If answer array is empty, student didnt gave any input
                 $result = 0;
             }
             
+            //Save the answer with the answer given by the student
             $answer->text = $answerText;
             $answer->result = $result;
             $answer->user_id = Auth::id();
@@ -129,7 +152,7 @@ class StudentsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified student from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -138,26 +161,5 @@ class StudentsController extends Controller
     {
         //
     }
-/*
-    public function array_diff_assoc_recursive($array1, $array2) {
-	    foreach($array1 as $key => $value) {
-            if(is_array($value)) {
-                if(!isset($array2[$key])) {
-                    $difference[$key] = $value;
-                } elseif (!is_array($array2[$key])) {
-                    $difference[$key] = $value;
-                } else {
-                    $new_diff = $this->array_diff_assoc_recursive($value, $array2[$key]);
-                    if($new_diff != FALSE) {
-                        $difference[$key] = $new_diff;
-                    }
-                }
-            } elseif(!isset($array2[$key]) || $array2[$key] != $value) {
-                $difference[$key] = $value;
-            }
-        }
-        return !isset($difference) ? 0 : $difference;
-    }
-    */
 }
 
