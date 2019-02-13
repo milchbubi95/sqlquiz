@@ -17,8 +17,16 @@
         {{ method_field('PATCH') }}
         @foreach ($questions as $question)
                 <div class="answer answer{{$i}}">
-                    <h3>{{$question->title}}</h3>
-                    <p>{{$question->text}}</p>
+                    <div class="row">
+                        <div class="col-6"><h3>{{$question->title}}</h3></div>
+                        <div class="col-6" style="text-align: right"><h3>Frage {{$i+1}}/{{count($questions)}}</h3></div>
+                    </div>
+                    <div class="row"><div class="col-12">
+                        @for ($x = 0; $x < $question->difficulty; $x++)
+                            <span class="fa fa-star checked"></span>
+                        @endfor
+                    </div></div>
+                    <div class="row"><div class="col-12"><p>{{$question->text}}</p></div></div>
                     <div class="form-group">
                         <textarea name="solution{{$question->id}}" id="answerBox{{$i}}" rows="5" class="form-control" placeholder=""></textarea>
                     </div>
@@ -31,13 +39,18 @@
                             </ul>
                         </div>
                         <div class="col-6" style="text-align: right">
-                            <button type="button" class="prevBtn{{$i}}" onclick="prevQuestion({{$i}})">Zurück</button>
+                            <button type="button" class="prevBtn{{$i}}" onclick="prevQuestion({{$i}}, {{count($questions)}})">Zurück</button>
                             <button type="button" class="nextBtn{{$i}}" onclick="nextQuestion({{$i}}, {{count($questions)}})">Weiter</button>
                         </div>
                     </div>
                         @if ($question->img != null)
                             <div class="row justify-content-center" style="margin-top: 30px">
-                                <img src="/sqlquiz/public/storage/images/{{$question->img}}">
+                                <a href="#img{{$i}}" style="text-align: center">
+                                    <img src="/sqlquiz/public/storage/images/{{$question->img}}" class="thumbnail">
+                                </a>
+                                <a href="#_" class="lightbox" id="img{{$i}}">
+                                    <img src="/sqlquiz/public/storage/images/{{$question->img}}">
+                                </a>
                             </div>
                         @endif
                 </div>
@@ -66,6 +79,7 @@
             $(".answer"+i).css('visibility', 'visible');
             if (count == 1) {
                 $(".nextBtn"+i).css('visibility', 'hidden');
+                $(".prevBtn"+i).css('visibility', 'hidden');
                 $("#finish").css('visibility', 'visible');
             }
         }
@@ -80,13 +94,15 @@
             }
         }
 
-        function prevQuestion(i) {
-            if(i>0) {
-               $(".answer"+i).css('visibility', 'hidden');
+        function prevQuestion(i, count) {
+            if(i > 0) {
+                $(".answer"+i).css('visibility', 'hidden');
                 i--;
                 $(".answer"+i).css('visibility', 'visible'); 
             }
-            
+            if (i < count) {
+                $("#finish").css('visibility', 'hidden');
+            }
         }
 
         function addText(event, i) {

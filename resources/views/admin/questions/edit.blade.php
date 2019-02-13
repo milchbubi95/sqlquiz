@@ -16,19 +16,19 @@
         {{ method_field('PATCH') }}
             <div class="form-group">
                 <label for="questionTitle">Titel*</label>
-                <input name="title" type="text" class="form-control" id="questionTitle" placeholder="{{$question->title}}">
+                <input name="title" type="text" class="form-control" id="questionTitle" value="{{$question->title}}">
             </div>
             <div class="form-group">
                 <label for="questionText">Fragestellung*</label>
-                <textarea name="text" rows="3" class="form-control" id="questionText" placeholder="{{$question->text}}"></textarea>
+                <textarea name="text" rows="3" class="form-control" id="questionText">{{$question->text}}</textarea>
             </div>
             <div class="form-group">
                 <label for="questionSolution">Lösung*</label>
-                <textarea name="solution" rows="3" class="form-control" id="questionSolution" placeholder="{{$question->solution}}"></textarea>
+                <textarea name="solution" rows="3" class="form-control" id="questionSolution">{{$question->solution}}</textarea>
             </div>
             <div class="form-group">
                 <label for="questionDifficult">Schwierigkeitsgrad*</label>
-                <input name="difficulty" type="number" class="form-control" id="questionDifficult" placeholder="{{$question->difficulty}}">
+                <input name="difficulty" type="number" class="form-control" id="questionDifficult" value="{{$question->difficulty}}">
             </div>
             <div class="form-group">
                 <label for="questionTest">Test*</label>

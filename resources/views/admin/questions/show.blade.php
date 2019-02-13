@@ -20,7 +20,9 @@
                 <hr>
                 @if($question->img != null)
                     <?php $path = '../../storage/images/'.$question->img; ?>
-                    <img src="{{$path}}" alt="img">
+                        <div class="container">
+                            <img src="{{$path}}" alt="img" style="max-width: 100%">
+                        </div>
                     <hr>
                 @endif
                 <div class="container">

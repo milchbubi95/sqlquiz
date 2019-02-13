@@ -109,8 +109,10 @@ class TestsController extends Controller
      * @param  \App\Test  $test
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Test $test)
+    public function destroy($id)
     {
-        //
+        $test = Test::find($id);
+        $test->delete();
+        return redirect('admin/tests')->with('success', 'Test gelöscht');
     }
 }

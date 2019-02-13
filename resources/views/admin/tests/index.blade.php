@@ -24,6 +24,7 @@ use App\User;
             <th scope="col">Fragen</th>
             <th scope="col">Erstellt von</th>
             <th scope="col">Erstellt am</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -36,6 +37,19 @@ use App\User;
                 <?php $user = User::where('id', $test->user_id)->first(); ?>
                 <td>{{$user->name}}</td>
                 <td>{{$test->created_at}}</td>
+                <td>
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                    <button class="btn btn-primary"><a href="tests/{{$test->id}}/edit" style="color: white"><i class="fas fa-pen"></i></a></button>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6" style="margin-left: 5px">
+                    {!!Form::open(['action' => ['TestsController@destroy', $test->id], 'method' => 'POST'])!!}
+                            {{Form::hidden('_method', 'DELETE')}}
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-trash"></i></button>
+                        {!!Form::close()!!}
+                    </div>
+                </div>
+                </div>
             </tr>
             <?php $count++; ?>
             @endforeach
