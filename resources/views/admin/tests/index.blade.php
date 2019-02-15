@@ -57,6 +57,10 @@ use App\User;
     </table>
 </div>
 
+    <div class="container">
+        {{ $tests->links() }}
+    </div>
+
 @else 
 <h5>Keine Tests vorhanden!</h5>
 @endif

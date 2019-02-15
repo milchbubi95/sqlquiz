@@ -58,4 +58,8 @@
     </div>
 </div>
 
+<div class="container">
+    {{ $tests->links() }}
+</div>
+
 @endsection

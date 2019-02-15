@@ -55,6 +55,10 @@ use App\Test;
     </table>
 </div>
 
+    <div class="container">
+        {{ $questions->links() }}
+    </div>
+
 @else 
 <h5>Keine Fragen vorhanden!</h5>
 @endif
