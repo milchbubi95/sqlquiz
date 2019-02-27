@@ -9,7 +9,7 @@
 
 <div class="container">
         <div class="row">
-            <h3>Frage erstellen</h3>
+            <h3>Frage bearbeiten</h3>
         </div>
         {!! Form::open(['action' => ['QuestionsController@update', $question->id], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
         {{ csrf_field() }}
@@ -34,7 +34,11 @@
                 <label for="questionTest">Test*</label>
                 <select name="test_id" class="form-control" id="questionTest">
                     @foreach ($tests as $test)
-                    <option value="{{$test->id}}">{{$test->title}}</option>
+                        @if ($question->test_id == $test->id)
+                            <option value="{{$test->id}}" selected>{{$test->title}}</option>
+                        @else
+                            <option value="{{$test->id}}">{{$test->title}}</option>
+                        @endif
                     @endforeach
                   </select>
             </div>

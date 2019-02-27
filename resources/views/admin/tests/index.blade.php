@@ -40,7 +40,7 @@ use App\User;
                 <td>
                 <div class="row">
                     <div class="col-lg-3 col-md-4 col-sm-6">
-                    <button class="btn btn-primary"><a href="tests/{{$test->id}}/edit" style="color: white"><i class="fas fa-pen"></i></a></button>
+                        <button class="btn btn-primary"><a href="tests/{{$test->id}}/edit" style="color: white"><i class="fas fa-pen"></i></a></button>
                     </div>
                     <div class="col-lg-3 col-md-4 col-sm-6" style="margin-left: 5px">
                     {!!Form::open(['action' => ['TestsController@destroy', $test->id], 'method' => 'POST'])!!}

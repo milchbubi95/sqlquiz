@@ -27,7 +27,7 @@
             }
         ?>
             <div class="progress">
-                <div class="progress-bar w-{{$amount}}" role="progressbar" aria-valuenow="{{$amount}}" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{$amount}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$amount}}%">{{$amount}}%</div>
             </div>
             <div style="text-align: right">
                     Abgaben: {{$count}}

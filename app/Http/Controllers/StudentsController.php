@@ -131,6 +131,7 @@ class StudentsController extends Controller
                     //Remove percentages for every difference or mistakes
                     //depending on the size of the answer array
                     $result = $result - (count($diff) / $counter);
+                    $result = round($result, 2);
                 } else {
                     //If no differences where found, answer and solution are the same
                     $result = 1;

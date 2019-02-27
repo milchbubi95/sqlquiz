@@ -88,7 +88,9 @@ class TestsController extends Controller
      */
     public function edit(Test $test)
     {
-        //
+        $test = Test::find($test->id);
+
+        return view('admin/tests.edit')->with('test', $test);
     }
 
     /**
@@ -100,7 +102,24 @@ class TestsController extends Controller
      */
     public function update(Request $request, Test $test)
     {
-        //
+        // Validate the new test with certain fields
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required'
+        ]);
+
+        // Update the specified question
+        $test = Test::find($test->id);
+        // Update all fields of the existing test
+        $test->title = $request->input('title');
+        $test->description = $request->input('description');
+        $test->user_id = Auth::id();
+        // Save the test
+        $test->save();
+
+        // Check for permissions
+        $request->user()->authorizeRoles(['dozent']);
+        return redirect('admin/tests')->with('success', 'Test erfolgreich aktualisiert!');
     }
 
     /**

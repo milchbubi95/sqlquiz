@@ -41,7 +41,7 @@ $questions = Question::where('test_id', $test->id)->get();
                     @foreach($questions as $question)
                     <tr>
                         <th scope="row">{{$count}}</th>
-                        <td><a href="questions/{{$question->id}}">{{$question->title}}</a></td>
+                        <td><a href="../questions/{{$question->id}}">{{$question->title}}</a></td>
                         <td>{{$question->difficulty}}</td>
                         <td>{{$question->solution}}</td>
                         <td>{{$question->created_at}}</td>

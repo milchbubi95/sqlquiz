@@ -157,7 +157,7 @@ class QuestionsController extends Controller
 
         // Update the specified question
         $question = Question::find($question->id);
-        // Get every field from the new question
+        // Update all fields of the existing question
         $question->title = $request->input('title');
         $question->text = $request->input('text');
         $question->solution = $request->input('solution');
