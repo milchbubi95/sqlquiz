@@ -29,6 +29,7 @@ Route::resource('admin/tests', 'TestsController');
 Route::resource('admin/questions', 'QuestionsController');
 Route::resource('admin/answers', 'AnswersController');
 Route::get('admin/answers/evaluate/{id}', 'AnswersController@evaluate');
+Route::get('admin/answers/insight/{id}', 'AnswersController@insight');
 
 //Routes for Students
 Route::resource('students', 'StudentsController');

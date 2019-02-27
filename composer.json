@@ -10,9 +10,11 @@
         "caouecs/laravel-lang": "~3.0",
         "fideloper/proxy": "^4.0",
         "greenlion/php-sql-parser": "^4.2",
+        "jdorn/sql-formatter": "^1.2",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "~5.0",
+        "qazd/text-diff": "^0.1.1",
         "rogervila/array-diff-multidimensional": "^1.0",
         "spatie/laravel-permission": "^2.29"
     },

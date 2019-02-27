@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-    <?php
+    <?php 
     use App\Answer;
     $index = 0;
     ?>
@@ -11,7 +11,7 @@
         @foreach ($questions as $question)
             <div style="margin-top: 30px; margin-bottom: 30px">
                 <?php $index++; ?>   
-            <h5>Frage {{$index}}: {{$question->text}}</h5>
+            <a href="insight/{{$question->id}}"><h5>Frage {{$index}}:</a> {{$question->text}}</h5>
         <?php
             $answers = Answer::where('question_id', $question->id)->get();
             $count = count($answers);

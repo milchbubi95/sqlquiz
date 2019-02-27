@@ -71,6 +71,13 @@ class AnswersController extends Controller
         return view('admin.answers.evaluate')->with(compact('user','answers'));
     }
 
+    public function insight($id) {
+        $question = Question::where('id', $id)->first();
+        $answers = Answer::where('question_id', $question->id)->get();
+
+        return view('admin.answers.insight')->with(compact('answers', 'question'));
+    }
+
     /**
      * Update the specified answer in storage.
      *

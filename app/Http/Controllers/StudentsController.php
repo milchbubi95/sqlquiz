@@ -96,18 +96,22 @@ class StudentsController extends Controller
             //Create a new answer for every question with its solution formatted uppercase
             $answer = new Answer;
             $solution = Question::where('id', $question->id)->first();
-            $solutionText = strtoupper($solution->solution);
+            $solutionText = $solution->solution;
 
             //Get the answer given by the student formatted uppercase
             $answerText = $request->input('solution'.$question->id);
-            $answerText = strtoupper($answerText);
+            
 
             //Get an array with every single SQL statement from the solution and answer
             //through the PHPSQLParser library (https://github.com/greenlion/PHP-SQL-Parser)
             $Qparser = new PHPSQLParser();
             $Qparsed = $Qparser->parse($solutionText);
-            $Aparser = new PHPSQLParser();
-            $Aparsed = $Aparser->parse($answerText);
+            if ($answerText != null) {
+                $Aparser = new PHPSQLParser();
+                $Aparsed = $Aparser->parse($answerText);
+            } else {
+                $Aparsed = 0;
+            }
 
             //If students answer is not empty
             if ($Aparsed != 0) {
