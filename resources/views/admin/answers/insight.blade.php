@@ -18,13 +18,12 @@
                 @if ($table != null)
                     <h5>Abgabe von {{$user->name}}</h5>
                     <?= $table ?>
-                    <hr>
+                    <div class="container"><hr></div>
                 @else
                     <?php $i++; ?>
                 @endif
             @endforeach
         </div>
-        <hr>
         <div class="row">
             <h3>Richtige Abgaben: {{$i}}</h3>
         </div>
