@@ -93,13 +93,15 @@ class StudentsController extends Controller
 
         // Loop trough all questions
         foreach ($questions as $question) {
-            //Create a new answer for every question with its solution formatted uppercase
+            //Create a new answer for every question with its solution formatted lowercase
             $answer = new Answer;
             $solution = Question::where('id', $question->id)->first();
             $solutionText = $solution->solution;
+            $solutionText = strtolower($solutionText);
 
-            //Get the answer given by the student formatted uppercase
+            //Get the answer given by the student formatted lowercase
             $answerText = $request->input('solution'.$question->id);
+            $answerText = strtolower($answerText);
             
 
             //Get an array with every single SQL statement from the solution and answer
